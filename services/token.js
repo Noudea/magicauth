@@ -9,7 +9,6 @@ const jwtOptions = {
     expiresIn: '5m',
 }
 
-
 const generateToken =  async (email) => {
     const token =  await jwt.sign({ userEmail: email }, loginSecretKey, jwtOptions)
     return token
@@ -34,4 +33,18 @@ const decodeToken = async(token) =>  {
 }
 
 
-export { generateToken, decodeToken, verifyToken}
+const jwtOptionsSession = {
+    issuer: 'magicauth.com',
+    audience: 'magicauth.com',
+    algorithm: 'HS256',
+    expiresIn: '60d',
+}
+
+
+const generateSessionToken = async (email) => {
+    const token =  await jwt.sign({ userEmail: email }, loginSecretKey, jwtOptionsSession)
+    return token
+}
+
+
+export { generateToken, decodeToken, verifyToken , generateSessionToken}

@@ -1,24 +1,24 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
-const verify = () => {
+const AuthProvider = ({children}) => {
+    const [isLoaded, setIsLoaded] = useState(false)
     const [signedIn, setSignedIn] = useState(false)
     const router = useRouter()
 
     useEffect(() => {
-        const accessToken = window.localStorage.getItem('accessToken')
-        console.log(accessToken)
+        const sessionToken = window.localStorage.getItem('sessionToken')
+        console.log(sessionToken)
 
-        if (!accessToken) {
+        if (!sessionToken) {
             router.push('/signIn')
         }
 
-
-        if (accessToken) {
+        if (sessionToken) {
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
 
-            var raw = JSON.stringify({ "accessToken": accessToken });
+            var raw = JSON.stringify({ "sessionToken": sessionToken });
 
             var requestOptions = {
                 method: 'POST',
@@ -29,21 +29,29 @@ const verify = () => {
 
             fetch("http://localhost:3000/api/auth/session", requestOptions)
                 .then(response => response.json())
-                .then(result => console.log(result))
+                .then(result => {
+                    if (result.session) {
+                        console.log(result.session)
+                        setSignedIn(true)
+                    }
+                    if(result.error) {
+                        router.push('/signIn')
+                    }
+                })
                 .catch(error => console.log('error', error));
         }
+        setIsLoaded(true)
     })
-
-
     return (<>
-        <div>
 
-
+    {isLoaded ? <>
+            <div>
+            {signedIn ? <> <p>I am logged in </p> </> : <> <p>I am not logged in</p></>}
+            {children}
         </div>
-
-
+        </> : <><p>Loader</p></>}
     </>)
 }
 
 
-export default verify
+export default AuthProvider

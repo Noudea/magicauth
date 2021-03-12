@@ -26,8 +26,8 @@ const signIn = () => {
             .then(response => response.json())
             .then(result => {
                 console.log(result)
-                window.localStorage.setItem('accessToken', result.data.verificationRequest.accessToken)
-                router.push('/verify')
+                window.localStorage.setItem('accessToken', result.verificationRequest.accessToken)
+                //router.push('/verify')
             })
             .catch(error => console.log('error', error));
     }

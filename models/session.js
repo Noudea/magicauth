@@ -6,6 +6,10 @@ const SessionSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        sessionToken: {
+            type: String,
+            required: true,
+        },
         userEmail: {
             type: String,
             required: true,

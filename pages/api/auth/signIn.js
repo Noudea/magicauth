@@ -22,6 +22,10 @@ export default (req, res) => {
             generateToken(email).then((token) => {
                 //generer un email et l'envoyer a l'utilisateur
                 sendMail(email, token)
+                // res.status(200).send({
+                //     success:true,
+                //     data : {token}
+                // })
                 const verificationRequest = new VerificationRequest()
                 verificationRequest.accessToken = token
                 verificationRequest.identifier = email
@@ -30,10 +34,9 @@ export default (req, res) => {
                     if (error) {
                         return res.status(500).send(error)
                     } else {
-                        console.log(verificationRequest)
                         res.status(200).json({
                             success: true,
-                            data: { verificationRequest },
+                            verificationRequest
                         })
                     }
                 })
@@ -42,6 +45,5 @@ export default (req, res) => {
             console.log(error)
             res.status(400).send({ error })
         }
-        //envoyer l'email
     }
 }
