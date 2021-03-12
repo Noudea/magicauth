@@ -9,8 +9,8 @@ const options = {
 
 // Create cached connection variable
 const connection = {}
-
 const DB_URI = process.env.DATABASE_URL
+console.log(DB_URI)
 
 const connectDb = async () => {
     if (connection.isConnected) {
