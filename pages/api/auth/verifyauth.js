@@ -1,4 +1,5 @@
 import Session from '../../../models/session'
+import User from '../../../models/user'
 import VerificationRequest from '../../../models/verificationRequest'
 import { connectDb } from '../../../services/mongooseDbConnect'
 import {
@@ -27,22 +28,34 @@ export default (req, res) => {
                             }
                         )
                         if (verificationRequest) {
-                            generateSessionToken(decodedToken.userEmail).then(
-                                (sessionToken) => {
-                                    const session = new Session()
-                                    session.accessToken = token
-                                    session.sessionToken = sessionToken
-                                    session.userEmail = decodedToken.userEmail
-                                    session.save((error, session) => {
-                                        // Traitement des erreurs
-                                        if (error) {
-                                            return res.status(500).send(error)
-                                        } else {
-                                            res.redirect('/verify')
-                                        }
-                                    })
+                            const session = new Session()
+                            session.accessToken = token
+                            session.sessionToken = decodedToken.sessionToken
+                            session.userEmail = decodedToken.userEmail
+                            session.save((error, session) => {
+                                // Traitement des erreurs
+                                if (error) {
+                                    return res.status(500).send(error)
                                 }
-                            )
+                            })
+                            const user = await User.findOne({
+                                email: decodedToken.userEmail,
+                            })
+                            if(user) {
+                                res.redirect('/welcome')
+                            }
+                            if (!user) {
+                                const user = new User()
+                                user.email = decodedToken.userEmail
+                                user.save((error, user) => {
+                                    // Traitement des erreurs
+                                    if (error) {
+                                        return res.status(500).send(error)
+                                    } else {
+                                        res.redirect('/createProfile')
+                                    }
+                                })
+                            }
                         } else {
                             res.status(400).send({
                                 error: {

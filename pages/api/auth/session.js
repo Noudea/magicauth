@@ -11,15 +11,15 @@ export default async (req, res) => {
         const accessToken = req.body.accessToken
         const sessionToken = req.body.sessionToken
 
-        if (accessToken) {
-            console.log(accessToken)
-            const session = await Session.findOne({accessToken : accessToken})
-            if(session) {
-                res.status(200).send({session}) 
-            } else {
-                res.status(400).send({error: 'no session'})
-            }
-        }
+        // if (accessToken) {
+        //     console.log(accessToken)
+        //     const session = await Session.findOne({accessToken : accessToken})
+        //     if(session) {
+        //         res.status(200).send({session}) 
+        //     } else {
+        //         res.status(400).send({error: 'no session'})
+        //     }
+        // }
         
         if (sessionToken) {
             console.log(sessionToken)

@@ -10,9 +10,11 @@ const jwtOptions = {
 }
 
 const generateToken =  async (email) => {
-    const token =  await jwt.sign({ userEmail: email }, loginSecretKey, jwtOptions)
-    return token
+    const sessionToken = await generateSessionToken()
+    const accessToken =  await jwt.sign({ userEmail: email,sessionToken : sessionToken }, loginSecretKey, jwtOptions)
+    return {accessToken,sessionToken}
 }
+
 const verifyToken = async (token) => {
     try {
         const verifyToken = await jwt.verify(token, loginSecretKey, jwtOptions)

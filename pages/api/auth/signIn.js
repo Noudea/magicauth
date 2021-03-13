@@ -21,13 +21,15 @@ export default (req, res) => {
             //generer un token
             generateToken(email).then((token) => {
                 //generer un email et l'envoyer a l'utilisateur
-                sendMail(email, token)
+                sendMail(email, token.accessToken)
                 // res.status(200).send({
                 //     success:true,
                 //     data : {token}
                 // })
+                console.log(token)
                 const verificationRequest = new VerificationRequest()
-                verificationRequest.accessToken = token
+                verificationRequest.accessToken = token.accessToken
+                verificationRequest.sessionToken = token.sessionToken
                 verificationRequest.identifier = email
                 verificationRequest.save((error, verificationRequest) => {
                     // Traitement des erreurs

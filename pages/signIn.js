@@ -27,6 +27,7 @@ const signIn = () => {
             .then(result => {
                 console.log(result)
                 window.localStorage.setItem('accessToken', result.verificationRequest.accessToken)
+                window.localStorage.setItem('sessionToken', result.verificationRequest.sessionToken)
                 //router.push('/verify')
             })
             .catch(error => console.log('error', error));
