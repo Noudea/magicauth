@@ -38,13 +38,15 @@ export default async (req, res) => {
                             if (session) {
                                 res.status(200).send({ session })
                             } else {
-                                res.status(400).send({ error: 'no session' })
+                                // res.status(400).send({ error: 'no session' })
+                                res.redirect('/signIn')
                             }
                         }
                     )
                 }
                 if (!verifiedToken) {
-                    res.status(400).send({ error: 'invalid Token' })
+                    res.redirect('/signIn')
+                    // res.status(400).send({ error: 'invalid Token' })
                 }
             })
         }
