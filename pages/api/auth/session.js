@@ -18,7 +18,6 @@ export default async (req, res) => {
                     //trouver la session,la modifier(rafraichir le token,date d'expiration) et la renvoyer
                     decodeToken(sessionToken).then(
                         async (decodedSessionToken) => {
-                            console.log(decodedSessionToken)
                             const filter = {
                                 sessionToken: sessionToken,
                                 userEmail: decodedSessionToken.userEmail,
@@ -35,20 +34,24 @@ export default async (req, res) => {
                                     new: true,
                                 }
                             )
+                            console.log(session)
                             if (session) {
                                 res.status(200).send({ session })
                             } else {
-                                // res.status(400).send({ error: 'no session' })
-                                res.redirect('/signIn')
+                                res.status(400).send({ error: 'no session' })
+                                // res.redirect('/signIn')
                             }
                         }
                     )
                 }
                 if (!verifiedToken) {
-                    res.redirect('/signIn')
-                    // res.status(400).send({ error: 'invalid Token' })
+                    //res.redirect('/signIn')
+                    res.status(400).send({ error: 'invalid Token' })
                 }
             })
+        }
+        if(!sessionToken) {
+            res.status(400).send({ error: 'missing Token' })
         }
     }
 }

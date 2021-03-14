@@ -2,10 +2,6 @@ const mongoose = require('mongoose')
 
 const SessionSchema = new mongoose.Schema(
     {
-        accessToken: {
-            type: String,
-            required: true,
-        },
         sessionToken: {
             type: String,
             required: true,

@@ -29,7 +29,6 @@ export default (req, res) => {
                         )
                         if (verificationRequest) {
                             const session = new Session()
-                            session.accessToken = token
                             session.sessionToken = decodedToken.sessionToken
                             session.userEmail = decodedToken.userEmail
                             session.save((error, session) => {
@@ -41,8 +40,8 @@ export default (req, res) => {
                             const user = await User.findOne({
                                 email: decodedToken.userEmail,
                             })
-                            if(user) {
-                                res.redirect('/welcome')
+                            if (user) {
+                                res.redirect('/')
                             }
                             if (!user) {
                                 const user = new User()
@@ -57,20 +56,24 @@ export default (req, res) => {
                                 })
                             }
                         } else {
-                            res.status(400).send({
-                                error: {
-                                    name: 'no verification request in database',
-                                },
-                            })
+                            //pas de vérification request dans la base de donnée
+                            res.redirect('/auth/invalidToken')
+                            // res.status(400).send({
+                            //     error: {
+                            //         name: 'no verification request in database',
+                            //     },
+                            // })
                         }
                     })
                 }
                 if (!verifiedToken) {
-                    res.status(400).send({
-                        error: {
-                            name: 'no valid token',
-                        },
-                    })
+                    //le token n'est plus valide
+                    res.redirect('/auth/invalidToken')
+                    // res.status(400).send({
+                    //     error: {
+                    //         name: 'no valid token',
+                    //     },
+                    // })
                 }
             })
         }

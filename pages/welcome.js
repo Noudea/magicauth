@@ -3,26 +3,28 @@ import { useEffect, useState } from 'react'
 import { useSession } from '../services/session'
 
 const welcome = () => {
-    const [loaded,setloaded] = useState(false)
+    const [isLoaded,setIsLoaded] = useState(false)
     const session = useSession()
-    useEffect(() => {
-        setloaded(true)
-    },[])
-
     if(session) {
         if(session.error) {
             console.log(session.error)
         }
         if(session.session) {
+            // setIsAuth(true)
             console.log(session.session)
         }
     }
+    
+    useEffect(() => {
+        setIsLoaded(true)
+    },[])
+    
     // if (error) {
     //     console.log('erreur')
     // }
     
     return(<>
-        <p>Welcome</p>
+    {isLoaded ? <p>Welcome</p> : <></>}
     </>)
 }
 

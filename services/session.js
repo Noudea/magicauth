@@ -1,8 +1,10 @@
+import { useRouter } from 'next/router'
 import {useState , useEffect} from 'react'
 import { connectDb } from './mongooseDbConnect'
 
 const useSession = () => {
     const [session,SetSession] = useState(false)
+    const router = useRouter()
     connectDb()
     useEffect(() => {
         var axios = require('axios');
@@ -19,14 +21,16 @@ const useSession = () => {
 
         axios(config)
         .then(function (response) {
-            console.log(response)
             SetSession(response.data)
+            window.localStorage.setItem('sessionToken',response.data.session.sessionToken)
         })
         .catch(function (error) {
-            console.log(error);
-            SetSession({error : {
-                name : "no session"
-            }})
+            //window.localStorage.removeItem('sessionToken')
+            // SetSession({error : {
+            //     name : "no session"
+            // }})
+            SetSession(false)
+            //router.push('/signIn')
         });
     },[])
     if(session) {
