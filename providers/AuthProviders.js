@@ -8,12 +8,11 @@ const AuthProvider = ({children}) => {
     console.log(session)
     if(session) {
         if(session) {
-            // setIsAuth(true)
             console.log(session.session)
         }
     }
     if(!session) {
-        
+
     }
     
     useEffect(() => {
@@ -27,7 +26,7 @@ const AuthProvider = ({children}) => {
             {session ? <> <p>I am logged in </p> </> : <> <p>I am not logged in</p></>}
             {children}
         </div>
-        </> : <><p>Loader</p></>}
+        </> : <><p></p></>}
     </>)
 }
 
